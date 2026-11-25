@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "invitation",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "node build.mjs && python3 -m http.server 4173 -d dist"],
+      "port": 4173
+    }
+  ]
+}

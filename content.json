@@ -1,0 +1,114 @@
+{
+  "site": {
+    "title": "Christeena & Samuel",
+    "description": "Betrothal · 2 January 2027 · Ayroor",
+    "url": "https://joyaljohnson.github.io/christeena/",
+    "ogImage": "assets/og-image.jpg",
+    "noindex": true,
+    "timezone": "Asia/Kolkata",
+    "utcOffset": "+05:30"
+  },
+
+  "envelope": {
+    "names": "Christeena & Samuel",
+    "line": "We are getting married",
+    "hint": "Tap the seal to open"
+  },
+
+  "music": {
+    "src": "assets/music.mp3"
+  },
+
+  "card": {
+    "verse": "So she became his wife and he loved her",
+    "verseRef": "Genesis 24:67",
+    "intro": "We are getting married",
+    "bride": {
+      "name": "Christeena Chacko",
+      "relation": "Daughter of",
+      "parents": "Mr. Chacko C V & Mrs. Beena Chacko",
+      "house": "Chirackal Manavalan House",
+      "place": "Ayroor, Ernakulam"
+    },
+    "groom": {
+      "name": "Samuel Jose",
+      "relation": "Son of",
+      "parents": "Mr. Jose Michael & Mrs. Delna Jose",
+      "house": "Erakathu House",
+      "place": "Bengaluru"
+    },
+    "highlightEvent": "betrothal",
+    "footnote": "followed by the wedding on Sunday, 10 January 2027 in Bengaluru"
+  },
+
+  "events": [
+    {
+      "id": "betrothal",
+      "name": "Betrothal",
+      "icon": "rings",
+      "start": "2027-01-02T16:00",
+      "durationHours": 3,
+      "venue": "St. Antony's Church",
+      "address": "Ayroor, Ernakulam",
+      "maps": "https://maps.app.goo.gl/EyMSdmT1gYBtNYcUA"
+    },
+    {
+      "id": "betrothal-reception",
+      "name": "Reception",
+      "icon": "heart",
+      "start": "2027-01-02T19:00",
+      "durationHours": 3,
+      "venue": "Parish Hall, St. Antony's Church",
+      "address": "Ayroor, Ernakulam",
+      "maps": "https://maps.app.goo.gl/EyMSdmT1gYBtNYcUA"
+    },
+    {
+      "id": "holy-matrimony",
+      "name": "Holy Matrimony",
+      "icon": "church",
+      "start": "2027-01-10T15:00",
+      "durationHours": 3,
+      "venue": "St Thomas Church, HAL",
+      "address": "Jeevan Bima Nagar, Bengaluru",
+      "maps": "https://maps.app.goo.gl/iwpi2ZsAvCLpqkrQ6"
+    },
+    {
+      "id": "wedding-reception",
+      "name": "Reception",
+      "icon": "flower",
+      "start": "2027-01-10T19:00",
+      "timeSuffix": "onwards",
+      "durationHours": 3,
+      "venue": "The Lily Pond",
+      "address": "Balagere Main Road, Bengaluru",
+      "maps": "https://maps.app.goo.gl/GC7JA9t9CkgiCfPW8"
+    }
+  ],
+
+  "sections": [
+    { "type": "countdown", "title": "Counting down", "targets": [
+      { "event": "betrothal", "label": "to the Betrothal" },
+      { "event": "holy-matrimony", "label": "to the Wedding" }
+    ], "after": "Thank you for celebrating with us" },
+
+    { "type": "events", "title": "The Betrothal", "events": ["betrothal", "betrothal-reception"] },
+
+    { "type": "events", "title": "The Wedding", "events": ["holy-matrimony", "wedding-reception"] },
+
+    { "type": "text", "id": "dress-code", "title": "Dress code", "text": "Details to follow soon." },
+
+    { "type": "link", "id": "photos", "title": "Our photos", "text": "A few moments from our journey together.", "url": "", "label": "View our photos", "comingSoon": "Photos coming soon" },
+
+    { "type": "names", "title": "Sharing the Happiness", "groups": [
+      { "label": "Bride's side", "names": ["Deteena"] },
+      { "label": "Groom's side", "names": ["Francis Michael", "Gracy Francis", "Stanley", "Sharon"] }
+    ] }
+  ],
+
+  "footer": {
+    "brideShort": "Christeena",
+    "groomShort": "Samuel",
+    "line": "With love and prayers",
+    "replay": "Open the invitation again"
+  }
+}
