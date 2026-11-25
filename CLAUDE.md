@@ -12,6 +12,7 @@ One static invitation page, the same for every guest. Live at https://joyaljohns
   - Tap targets at least 44px.
   - WCAG AA contrast: text uses `--ink` or `--gold-text`; `--gold` and the foil gradient are for decoration only.
   - Respect `prefers-reduced-motion`: the envelope becomes a fade, and shimmer, bob and reveal effects switch off.
+- **Envelope (mobile-first, full screen):** the envelope fills the phone screen, with the writing on it ("We are getting married" and the names). The envelope is one even paper colour (no lighter flap, no drawn fold lines; the front pocket is cut in a V at the top, so the letter shows where the flap was), with no tap hint and no Skip button. The music button appears only on the card, never on the envelope. The wax seal sits at the flap tip, about a third of the way down. There's no ribbon. On tap, the flap lifts up out of the frame, and the top of the card shows through the V of the envelope. The envelope is then pulled down, uncovering the full-screen card line by line. There's no zooming or scaling: the screen acts like a fixed camera.
 - **Visual style:** ivory paper, gold line-art florals, gold wax seal, Pinyon Script for names and titles, Cormorant Garamond for text. Fonts are self-hosted in `assets/fonts/`; don't add external requests.
 - **Artwork:**
   - Source files live in `artwork/` and are never edited.
@@ -31,7 +32,7 @@ One static invitation page, the same for every guest. Live at https://joyaljohns
 ## Files
 - `content.json` — all content
 - `build.mjs` — page and `.ics` generator
-- `src/style.css`, `src/main.js` — styles, envelope animation, ribbon physics, music, countdown
+- `src/style.css`, `src/main.js` — styles, envelope animation, music, countdown
 - `assets/` — web-ready art, fonts, music
 - `artwork/` — original art
 - `tools/` — art processing and OG image scripts

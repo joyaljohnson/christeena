@@ -231,38 +231,28 @@ function footer() {
 
 function envelope() {
   const v = c.envelope;
+  const names = v.names.split("&").map((n) => n.trim());
   return `
   <div class="intro" id="intro" aria-label="Invitation envelope">
-    <canvas class="ribbon" aria-hidden="true"></canvas>
-    <div class="env env-back" aria-hidden="true"></div>
     <div class="card-clip" aria-hidden="true"></div>
-    <div class="env env-front" aria-hidden="true">
-      <svg class="env-front__svg" viewBox="0 0 100 70" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#F6EFE2"/><stop offset="1" stop-color="#EFE5D3"/></linearGradient>
-          <linearGradient id="gr" x1="1" x2="0"><stop offset="0" stop-color="#F6EFE2"/><stop offset="1" stop-color="#EFE5D3"/></linearGradient>
-          <linearGradient id="gb" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FBF7EF"/><stop offset="1" stop-color="#F3EBDD"/></linearGradient>
-        </defs>
-        <path d="M0 0 L52 39 L0 70Z" fill="url(#gl)"/>
-        <path d="M100 0 L48 39 L100 70Z" fill="url(#gr)"/>
-        <path d="M0 70 L50 33 L100 70Z" fill="url(#gb)"/>
-        <path d="M0 70 L50 33 L100 70" fill="none" stroke="rgba(122,90,43,.22)" stroke-width="1" vector-effect="non-scaling-stroke"/>
-        <path d="M0 0 L50 37.5 M100 0 L50 37.5" fill="none" stroke="rgba(122,90,43,.12)" stroke-width="1" vector-effect="non-scaling-stroke"/>
-      </svg>
+    <div class="intro__stage">
+      <div class="env env-back" aria-hidden="true"></div>
+      <div class="env env-front" aria-hidden="true">
+        <div class="env-pocket"></div>
+        ${floral("env-bl")}${floral("env-br")}
+        <div class="env-text">
+          <p class="env-text__line caps">${esc(v.line)}</p>
+          <p class="env-text__names script">${names.map((n, i) => (i ? `<span class="env-text__amp">&amp;</span>` : "") + `<span>${esc(n)}</span>`).join("")}</p>
+        </div>
+      </div>
+      <div class="env env-flap">
+        <div class="flap-face flap-face--out">${floral("flap-l")}${floral("flap-r")}</div>
+        <div class="flap-face flap-face--in"></div>
+        <button class="seal" type="button" aria-label="Open the invitation">
+          <img src="assets/seal.webp" alt="" width="480" height="482" draggable="false">
+        </button>
+      </div>
     </div>
-    <div class="env env-flap" aria-hidden="false">
-      <div class="flap-face flap-face--out">${floral("flap-l")}${floral("flap-r")}</div>
-      <div class="flap-face flap-face--in"></div>
-      <button class="seal" type="button" aria-label="Open the invitation">
-        <img src="assets/seal.webp" alt="" width="480" height="482" draggable="false">
-      </button>
-    </div>
-    <div class="intro__title">
-      <p class="intro__line caps">${esc(v.line)}</p>
-      <p class="intro__names script">${esc(v.names)}</p>
-    </div>
-    <p class="intro__hint caps" aria-hidden="true">${esc(v.hint)}</p>
-    <button class="intro__skip" type="button">Skip</button>
   </div>`;
 }
 
