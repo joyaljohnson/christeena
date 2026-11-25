@@ -11,7 +11,6 @@
   const main = $("#main");
   const audio = $(".audio");
   const musicBtn = $(".music");
-  const replayBtn = $("[data-replay]");
 
   // ---------------- easing helpers ----------------
   const clamp01 = (t) => (t < 0 ? 0 : t > 1 ? 1 : t);
@@ -105,7 +104,6 @@
     root.classList.remove("is-intro");
     intro.classList.add("is-gone");
     main.inert = false;
-    replayBtn.hidden = false;
     main.focus({ preventScroll: true });
     observeReveals();
   }
@@ -164,11 +162,6 @@
     main.inert = true;
     resetIntro();
     els.seal.addEventListener("click", open);
-    replayBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "instant" });
-      resetIntro();
-      els.seal.focus();
-    });
     // Coming back via the back/forward cache: show the envelope again.
     window.addEventListener("pageshow", (e) => { if (e.persisted) resetIntro(); });
   }

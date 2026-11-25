@@ -90,24 +90,23 @@
       { "event": "holy-matrimony", "label": "to the Wedding" }
     ], "after": "Thank you for celebrating with us" },
 
-    { "type": "events", "title": "The Betrothal", "events": ["betrothal", "betrothal-reception"] },
+    { "type": "events", "id": "betrothal", "title": "The Betrothal", "calendarTitle": "Betrothal", "events": ["betrothal", "betrothal-reception"] },
 
-    { "type": "events", "title": "The Wedding", "events": ["holy-matrimony", "wedding-reception"] },
+    { "type": "events", "id": "wedding", "title": "The Wedding", "calendarTitle": "Wedding", "events": ["holy-matrimony", "wedding-reception"] },
 
     { "type": "text", "id": "dress-code", "title": "Dress code", "text": "Details to follow soon." },
 
     { "type": "link", "id": "photos", "title": "Our photos", "text": "A few moments from our journey together.", "url": "", "label": "View our photos", "comingSoon": "Photos coming soon" },
 
     { "type": "names", "title": "Sharing the Happiness", "groups": [
-      { "label": "Bride's side", "names": ["Deteena"] },
-      { "label": "Groom's side", "names": ["Francis Michael", "Gracy Francis", "Stanley", "Sharon"] }
+      { "names": ["Deteena"] },
+      { "names": ["Francis Michael", "Gracy Francis", "Stanley", "Sharon"] }
     ] }
   ],
 
   "footer": {
     "brideShort": "Christeena",
     "groomShort": "Samuel",
-    "line": "With love and prayers",
-    "replay": "Open the invitation again"
+    "line": "With love and prayers"
   }
 }

@@ -66,10 +66,14 @@ function fold(line) {
   parts.push(cur);
   return parts.join("\r\n ");
 }
-function ics(e) {
-  const start = startDate(e);
-  const end = new Date(start.getTime() + e.durationHours * 3600e3);
-  const title = e.calendarTitle || `${e.name === "Reception" ? (e.id.startsWith("betrothal") ? "Betrothal Reception" : "Wedding Reception") : e.name} – ${c.site.title}`;
+// One calendar entry per section card, from its first start to its last end.
+function ics(sec) {
+  const evs = sec.events.map(getEvent);
+  const start = new Date(Math.min(...evs.map((e) => startDate(e).getTime())));
+  const end = new Date(Math.max(...evs.map((e) => startDate(e).getTime() + e.durationHours * 3600e3)));
+  const title = `${sec.calendarTitle} – ${c.site.title}`;
+  const e = { id: sec.id, start: evs[0].start, venue: evs[0].venue, address: evs[0].address, maps: evs[0].maps };
+  const details = evs.map((x) => `${x.name}: ${timeLabel(x)}, ${x.venue}, ${x.address}\nDirections: ${x.maps}`).join("\n\n");
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -83,7 +87,7 @@ function ics(e) {
     `DTEND:${icsDate(end)}`,
     `SUMMARY:${icsEscape(title)}`,
     `LOCATION:${icsEscape(`${e.venue}, ${e.address}`)}`,
-    `DESCRIPTION:${icsEscape(`Directions: ${e.maps}\nInvitation: ${c.site.url}`)}`,
+    `DESCRIPTION:${icsEscape(`${details}\n\nInvitation: ${c.site.url}`)}`,
     `URL:${c.site.url}`,
     "BEGIN:VALARM",
     "ACTION:DISPLAY",
@@ -134,19 +138,34 @@ function card() {
   </article>`;
 }
 
-function eventCard(e) {
-  const d = startDate(e);
+// One card per section (e.g. the Betrothal and its reception). If every part is at the same
+// place there is one "Get directions" button; otherwise each part gets its own directions link.
+function sectionCard(sec) {
+  const evs = sec.events.map(getEvent);
+  const d = startDate(evs[0]);
+  const oneVenue = new Set(evs.map((e) => e.maps)).size === 1;
+  const dir = (e) => `<a class="part__link" href="${esc(e.maps)}" target="_blank" rel="noopener">Get directions<span class="sr-only"> to ${esc(e.venue)} (opens Google Maps)</span></a>`;
   return `
-        <li class="event reveal">
-          <span class="event__icon">${icon(e.icon)}</span>
-          <h3 class="event__name script">${esc(e.name)}</h3>
-          <p class="event__when caps"><time datetime="${esc(d.toISOString())}">${esc(longDate(d))}</time><br>${esc(timeLabel(e))}</p>
-          <p class="event__venue">${esc(e.venue)}<br><span>${esc(e.address)}</span></p>
-          <div class="event__actions">
-            <a class="btn" href="${esc(e.maps)}" target="_blank" rel="noopener">Get directions<span class="sr-only"> to ${esc(e.venue)} (opens Google Maps)</span></a>
-            <a class="btn btn--ghost" href="ics/${esc(e.id)}.ics">Add to calendar<span class="sr-only">: ${esc(e.name)}, ${esc(longDate(d))}</span></a>
-          </div>
-        </li>`;
+      <div class="event">
+        <p class="event__when caps"><time datetime="${esc(d.toISOString().slice(0, 10))}">${esc(longDate(d))}</time></p>
+        <ul class="parts" role="list">${evs
+          .map(
+            (e) => `
+          <li class="part">
+            <span class="event__icon">${icon(e.icon)}</span>
+            <h3 class="event__name script">${esc(e.name)}</h3>
+            <p class="part__time caps">${esc(timeLabel(e))}</p>
+            <p class="event__venue">${esc(e.venue)}<br><span>${esc(e.address)}</span></p>
+            ${oneVenue ? "" : dir(e)}
+          </li>`
+          )
+          .join("")}
+        </ul>
+        <div class="event__actions">
+          ${oneVenue ? `<a class="btn" href="${esc(evs[0].maps)}" target="_blank" rel="noopener">Get directions<span class="sr-only"> to ${esc(evs[0].venue)} (opens Google Maps)</span></a>` : ""}
+          <a class="btn${oneVenue ? " btn--ghost" : ""}" href="ics/${esc(sec.id)}.ics">Add to calendar<span class="sr-only">: ${esc(sec.title)}, ${esc(longDate(d))}</span></a>
+        </div>
+      </div>`;
 }
 
 const sectionRenderers = {
@@ -166,8 +185,7 @@ const sectionRenderers = {
     <section class="section reveal" aria-labelledby="s${i}">
       ${divider}
       <h2 class="section__title script" id="s${i}">${esc(s.title)}</h2>
-      <ul class="events" role="list">${s.events.map((id) => eventCard(getEvent(id))).join("")}
-      </ul>
+      ${sectionCard(s)}
     </section>`;
   },
   text(s, i) {
@@ -199,7 +217,6 @@ const sectionRenderers = {
         .map(
           (g) => `
         <div class="names__group">
-          <h3 class="names__label caps">${esc(g.label)}</h3>
           <ul role="list">${g.names.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
         </div>`
         )
@@ -225,7 +242,6 @@ function footer() {
     <p class="footer__names script">${esc(c.site.title)}</p>
     <p class="footer__line caps">${esc(f.line)}</p>
     <p class="footer__date caps">${esc(dayNum(d))} · ${esc(month(d))} · ${esc(year(d))}</p>
-    <button class="btn btn--ghost replay" type="button" data-replay hidden>${esc(f.replay)}</button>
   </footer>`;
 }
 
@@ -311,6 +327,6 @@ cpSync(ROOT + "src/style.css", DIST + "style.css");
 cpSync(ROOT + "src/main.js", DIST + "main.js");
 if (existsSync(ROOT + "src/robots.txt")) cpSync(ROOT + "src/robots.txt", DIST + "robots.txt");
 writeFileSync(DIST + ".nojekyll", "");
-for (const e of c.events) writeFileSync(DIST + `ics/${e.id}.ics`, ics(e));
+for (const sec of c.sections.filter((x) => x.type === "events")) writeFileSync(DIST + `ics/${sec.id}.ics`, ics(sec));
 writeFileSync(DIST + "index.html", page({ css: hash(ROOT + "src/style.css"), js: hash(ROOT + "src/main.js") }));
-console.log(`Built dist/ — ${c.events.length} calendar files, ${c.sections.length} sections.`);
+console.log(`Built dist/ — ${c.sections.filter((x) => x.type === "events").length} calendar files, ${c.sections.length} sections.`);
